@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, TextInput } from 'react-native'
+import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, TextInput, ScrollView } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import popularData from '../../../assets/data/popularData'
@@ -32,6 +32,7 @@ export default class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 <SafeAreaView>
                     <View style={styles.headerWrapper}>
                         <Image source={require('../../../assets/images/profile.png')} style={styles.profileImage}/>
@@ -70,11 +71,39 @@ export default class Home extends Component {
                 <View style={styles.popularWrapper}>
                     <Text style={styles.popularTitle}>Popular</Text>
                     {popularData.map((item) => (
-                        <View>
-                            <Text>hello</Text>
+                        <View style={[styles.popularCardWrapper, {
+                            marginTop: item.id == 1 ? 10 : 20
+                        }]}>
+                            <View>
+                                <View>
+                                    <View style={styles.popularTopWrapper}>
+                                        <MaterialCommunityIcons name='crown' size={12} color={COLOR.primary}/>
+                                        <Text style={styles.popularTopText}>top of the week</Text>
+                                    </View>
+                                    <View style={styles.popularTitlesWrapper}>
+                                        <Text style={styles.popularTitlesTitle}>{item.title}</Text>
+                                        <Text style={styles.popularTitlesWeight}>{item.weight}</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <View style={styles.popularCardButtom}>
+                                        <View style={styles.popularAddButton}>
+                                            <Feather name='plus' size={10} color={COLOR.textDark}/>
+                                        </View>
+                                        <View style={styles.ratingWrapper}>
+                                            <MaterialCommunityIcons name='star' size={10} color={COLOR.textDark}/>
+                                            <Text style={styles.ratingText}>{item.rating}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.popularCardRight}>
+                                <Image source={item.image} style={styles.popularCardImage}/>
+                            </View>
                         </View>
                     ))}
                 </View>
+                </ScrollView>
             </View>
         )
     }
@@ -143,7 +172,15 @@ const styles = StyleSheet.create({
     categoriesItemWrapper:{
         marginRight:20,
         borderRadius:20,
-        backgroundColor:COLOR.primary
+        backgroundColor:COLOR.primary,
+        shadowColor:COLOR.black,
+        shadowOffset: {
+            width:0,
+            height:2
+        },
+        shadowOpacity:0.05,
+        shadowRadius:10,
+        elevation:2
     },
     categoriesItemImage:{
         width:60,
@@ -169,5 +206,83 @@ const styles = StyleSheet.create({
     },
     categoriesSelected:{
         alignSelf:'center'
+    },
+    popularWrapper:{
+        paddingHorizontal:20
+    },
+    popularCardWrapper:{
+        backgroundColor: COLOR.white,
+        borderRadius:25,
+        paddingTop:20,
+        paddingLeft:20,
+        flexDirection:'row',
+        overflow:'hidden',
+        shadowColor:COLOR.black,
+        shadowOffset: {
+            width:0,
+            height:2
+        },
+        shadowOpacity:0.05,
+        shadowRadius:10,
+        elevation:2
+    },
+    popularTitle:{
+        fontFamily:'montserrat-Bold',
+        fontSize:16
+    },
+    popularTopWrapper:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    popularTopText:{
+        marginLeft:10,
+        fontFamily:'montserrat-Semibold',
+        fontSize:14
+    },
+    popularTitlesWrapper:{
+        marginTop:20
+    },
+    popularTitlesTitle:{
+        fontSize:14,
+        fontFamily:'montserrat-Semibold',
+        color:COLOR.textDark,
+        marginBottom:5
+    },
+    popularTitlesWeight:{
+        fontFamily:'montserrat-Medium',
+        fontSize:14,
+        color:COLOR.textLight
+    },
+    popularCardButtom:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginTop:10,
+        marginLeft:-20
+    },
+    popularAddButton:{
+        backgroundColor:COLOR.primary,
+        paddingHorizontal:40,
+        paddingVertical:20,
+        borderTopRightRadius:25,
+        borderBottomLeftRadius:25
+    },
+    ratingWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginLeft:20
+    },
+    ratingText:{
+        fontFamily:'montserrat-Semibold',
+        fontSize:12,
+        color:COLOR.textDark,
+        marginLeft:5 
+    },
+    popularCardRight:{
+        marginLeft:40
+    },
+    popularCardImage:{
+        width:210,
+        height:125,
+        resizeMode:'contain'
     },
 })
