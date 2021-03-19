@@ -16,6 +16,12 @@ const categoriesData = [
         image:require('../../images/soda-icon.png'),
         title:'Drink',
         selected:false
+    },
+    {
+        id:4,
+        image:require('../../images/soda-icon.png'),
+        title:'Soda',
+        selected:false
     }
 ]
 
