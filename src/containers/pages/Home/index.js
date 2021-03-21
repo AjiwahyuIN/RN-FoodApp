@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, TextInput, ScrollView } from 'react-native'
+import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import popularData from '../../../assets/data/popularData'
@@ -10,26 +10,28 @@ import { color } from 'react-native-reanimated'
 Feather.loadFont()
 MaterialCommunityIcons.loadFont()
 
-const renderCategoriesItem = ({item}) => {
-    return(
-        <View style={[styles.categoriesItemWrapper, {
-            backgroundColor: item.selected ? COLOR.primary : COLOR.white,
-            marginLeft: item.id == 1 ? 20 : 0
-        }]}>
-            <Image source={item.image} style={styles.categoriesItemImage}/>
-            <Text style={styles.categoriesItemTitle}>{item.title}</Text>
-            <View style={[styles.categoriesSelectedWrapper, {
-                backgroundColor: item.selected ? COLOR.white : COLOR.secondary
+
+const Home = ({navigation}) => {
+    
+    const renderCategoriesItem = ({item}) => {
+        return(
+            <View style={[styles.categoriesItemWrapper, {
+                backgroundColor: item.selected ? COLOR.primary : COLOR.white,
+                marginLeft: item.id == 1 ? 20 : 0
             }]}>
-                <Feather name='chevron-right' size={8} style={[styles.categoriesSelected, {
-                    color: item.selected ? COLOR.black : COLOR.white
-                }]}/>
+                <Image source={item.image} style={styles.categoriesItemImage}/>
+                <Text style={styles.categoriesItemTitle}>{item.title}</Text>
+                <View style={[styles.categoriesSelectedWrapper, {
+                    backgroundColor: item.selected ? COLOR.white : COLOR.secondary
+                }]}>
+                    <Feather name='chevron-right' size={8} style={[styles.categoriesSelected, {
+                        color: item.selected ? COLOR.black : COLOR.white
+                    }]}/>
+                </View>
             </View>
-        </View>
-    )
-}
-export default class Home extends Component {
-    render() {
+        )
+    }
+        // const { navigation } = this.props;
         return (
             <View style={styles.container}>
                 <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
@@ -63,6 +65,7 @@ export default class Home extends Component {
                         renderItem={renderCategoriesItem}
                         keyExtractor={item => item.id}
                         horizontal={true}
+                        showsHorizontalScrollIndicator={false}
                         />
                     </View>
                 </View>
@@ -71,43 +74,50 @@ export default class Home extends Component {
                 <View style={styles.popularWrapper}>
                     <Text style={styles.popularTitle}>Popular</Text>
                     {popularData.map((item) => (
-                        <View style={[styles.popularCardWrapper, {
-                            marginTop: item.id == 1 ? 10 : 20
-                        }]}>
-                            <View>
+                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Detail', {
+                            item:item,
+                            })
+                        }>
+                            <View style={[styles.popularCardWrapper, {
+                                marginTop: item.id == 1 ? 10 : 20
+                            }]}>
                                 <View>
-                                    <View style={styles.popularTopWrapper}>
-                                        <MaterialCommunityIcons name='crown' size={12} color={COLOR.primary}/>
-                                        <Text style={styles.popularTopText}>top of the week</Text>
-                                    </View>
-                                    <View style={styles.popularTitlesWrapper}>
-                                        <Text style={styles.popularTitlesTitle}>{item.title}</Text>
-                                        <Text style={styles.popularTitlesWeight}>{item.weight}</Text>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={styles.popularCardButtom}>
-                                        <View style={styles.popularAddButton}>
-                                            <Feather name='plus' size={10} color={COLOR.textDark}/>
+                                    <View>
+                                        <View style={styles.popularTopWrapper}>
+                                            <MaterialCommunityIcons name='crown' size={12} color={COLOR.primary}/>
+                                            <Text style={styles.popularTopText}>top of the week</Text>
                                         </View>
-                                        <View style={styles.ratingWrapper}>
-                                            <MaterialCommunityIcons name='star' size={10} color={COLOR.textDark}/>
-                                            <Text style={styles.ratingText}>{item.rating}</Text>
+                                        <View style={styles.popularTitlesWrapper}>
+                                            <Text style={styles.popularTitlesTitle}>{item.title}</Text>
+                                            <Text style={styles.popularTitlesWeight}>{item.weight}</Text>
                                         </View>
                                     </View>
+                                    <View>
+                                        <View style={styles.popularCardButtom}>
+                                            <View style={styles.popularAddButton}>
+                                                <Feather name='plus' size={10} color={COLOR.textDark}/>
+                                            </View>
+                                            <View style={styles.ratingWrapper}>
+                                                <MaterialCommunityIcons name='star' size={10} color={COLOR.textDark}/>
+                                                <Text style={styles.ratingText}>{item.rating}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.popularCardRight}>
+                                    <Image source={item.image} style={styles.popularCardImage}/>
                                 </View>
                             </View>
-                            <View style={styles.popularCardRight}>
-                                <Image source={item.image} style={styles.popularCardImage}/>
-                            </View>
-                        </View>
+                        </TouchableOpacity>
                     ))}
                 </View>
                 </ScrollView>
             </View>
         )
-    }
 }
+
+export default Home
+
 const styles = StyleSheet.create({
     container:{
         flex:1
@@ -286,3 +296,4 @@ const styles = StyleSheet.create({
         resizeMode:'contain'
     },
 })
+
